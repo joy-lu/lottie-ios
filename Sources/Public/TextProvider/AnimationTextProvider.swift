@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import CoreGraphics
+import UIKit
 
 // MARK: - AnimationKeypathTextProvider
 public struct TextRangeData {

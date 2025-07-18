@@ -13,7 +13,8 @@ import UIKit
 #endif
 
 extension TextJustification {
-
+    
+    
     var textAlignment: NSTextAlignment {
         switch self {
         case .left:
@@ -22,6 +23,8 @@ extension TextJustification {
                 .right
         case .center:
                 .center
+        case .justifyLastLineLeft, .justifyLastLineRight, .justifyLastLineCenter, .justifyLastLineFull:
+                .justified
         }
     }
     
@@ -33,31 +36,9 @@ extension TextJustification {
                 .right
         case .center:
                 .center
+        case .justifyLastLineLeft, .justifyLastLineRight, .justifyLastLineCenter, .justifyLastLineFull:
+                .justified
         }
-
-  var textAlignment: NSTextAlignment {
-    switch self {
-    case .left:
-      .left
-    case .right:
-      .right
-    case .center:
-      .center
-    case .justifyLastLineLeft, .justifyLastLineRight, .justifyLastLineCenter, .justifyLastLineFull:
-      .justified
-    }
-  }
-
-  var caTextAlignement: CATextLayerAlignmentMode {
-    switch self {
-    case .left:
-      .left
-    case .right:
-      .right
-    case .center:
-      .center
-    case .justifyLastLineLeft, .justifyLastLineRight, .justifyLastLineCenter, .justifyLastLineFull:
-      .justified
     }
 }
 
@@ -87,14 +68,14 @@ final class TextCompositionLayer: CompositionLayer {
         super.init(layer: textLayer, size: .zero)
         contentsLayer.addSublayer(backgroundLayer)
         contentsLayer.addSublayer(self.textLayer)
-//        self.textLayer.frame = CGRect(x: 0, y: 0, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
+        //        self.textLayer.frame = CGRect(x: 0, y: 0, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
         
         backgroundLayer.fillColor = UIColor.clear.cgColor   // 初始无色
         self.textLayer.masksToBounds = false
         self.textLayer.isGeometryFlipped = true
-//        self.addSublayer(self.textLayer)
-//        contentsLayer.backgroundColor = UIColor.red.cgColor
-//        self.backgroundColor = UIColor.red.cgColor
+        //        self.addSublayer(self.textLayer)
+        //        contentsLayer.backgroundColor = UIColor.red.cgColor
+        //        self.backgroundColor = UIColor.red.cgColor
         if let rootNode {
             childKeypaths.append(rootNode)
         }
@@ -207,11 +188,11 @@ final class TextCompositionLayer: CompositionLayer {
             textLayer.lineHeight = CGFloat(text.lineHeight)
         }
         print("lintheig===>\(textLayer.lineHeight)===>wosdpace:\(tracking)")
-//        if let backColor = textProvider.updateTextBackgroundColor() {
-//            textLayer.backColor = backColor.color
-//        } else {
-//            textLayer.backColor = nil
-//        }
+        //        if let backColor = textProvider.updateTextBackgroundColor() {
+        //            textLayer.backColor = backColor.color
+        //        } else {
+        //            textLayer.backColor = nil
+        //        }
         
         
         textLayer.tracking = tracking
@@ -238,7 +219,7 @@ final class TextCompositionLayer: CompositionLayer {
             textLayer.selectedRangeOpacity = selectedRangeOpacity
             textLayer.textRangeColor = rootNode?.textOutputNode.fillColor
         }
-       
+        
         if let fillColor = textProvider.updateTextFillColor(text.fillColorData?.cgColorValue) {
             textLayer.fillColor = fillColor
         } else if let fillColor = text.fillColorData?.cgColorValue {
@@ -281,7 +262,7 @@ final class TextCompositionLayer: CompositionLayer {
                 var dy  = distPx * sin(rad)
                 // 若几何坐标翻转，则反向 y
                 if textLayer.isGeometryFlipped { dy = -dy }
-
+                
                 textLayer.textShadowOffset = CGSize(width: dx, height: dy)
             } else {
                 textLayer.textShadowOffset = .zero
@@ -294,7 +275,7 @@ final class TextCompositionLayer: CompositionLayer {
         }
         
         textLayer.preferredSize = text.textFrameSize?.sizeValue //设置固定宽高
-//        textLayer.strokeOnTop = text.strokeOverFill ?? false //使用默认false，设置外描边
+        //        textLayer.strokeOnTop = text.strokeOverFill ?? false //使用默认false，设置外描边
         textLayer.strokeWidth = strokeWidth * 4
         textLayer.strokeColor = strokeColor
         textLayer.sizeToFit()
@@ -307,7 +288,7 @@ final class TextCompositionLayer: CompositionLayer {
     }
     
     // MARK: - Background
-
+    
     private func updateBackground() {
         // 1) 如果没有背景色，直接隐藏
         guard let bgModel = textProvider.updateTextBackgroundColor() else {
@@ -349,7 +330,7 @@ final class TextCompositionLayer: CompositionLayer {
         let offsetY = -(offsetYValue - 0.5) * textSize.height * 2
         print("offsetX:\(offsetX)offsetYsss:\(offsetY)")
         // 7) 计算背景的中心位置
-//        let textCenter = calculateTextCenter(textSize: textSize)
+        //        let textCenter = calculateTextCenter(textSize: textSize)
         backgroundLayer.position = CGPoint(
             x: textLayer.position.x + offsetX,
             y: textLayer.position.y + offsetY
@@ -408,3 +389,5 @@ final class TextCompositionLayer: CompositionLayer {
         textLayer.contentsScale = renderScale
     }
 }
+
+

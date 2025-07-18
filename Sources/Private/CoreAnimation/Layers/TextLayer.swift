@@ -70,7 +70,12 @@ final class TextLayer: BaseCompositionLayer {
         } else {
             renderLayer.text = sourceText.text
         }
-        
+        if
+          let contentsScaleProvider = context.textProvider as? TextContentsScaleProvider,
+          let contentsScale = contentsScaleProvider.contentsScale(for: textAnimationContext.currentKeypath)
+        {
+          renderLayer.contentsScale = contentsScale
+        }
         renderLayer.sizeToFit()
     }
     
@@ -194,13 +199,7 @@ final class TextLayer: BaseCompositionLayer {
         
         renderLayer.preferredSize = text.textFrameSize?.sizeValue
         // Apply the custom contents scale for this layer if it was provided
-        if
-          let contentsScaleProvider = context.textProvider as? TextContentsScaleProvider,
-          let contentsScale = contentsScaleProvider.contentsScale(for: textAnimationContext.currentKeypath)
-        {
-          renderLayer.contentsScale = contentsScale
-        }
-
+        
         renderLayer.sizeToFit()
         
         renderLayer.transform = CATransform3DIdentity
